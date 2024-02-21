@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.taskmanagement.dto.TaskEntity;
 import com.demo.taskmanagement.dto.User;
 import com.demo.taskmanagement.response.ResponseStructure;
 import com.demo.taskmanagement.service.UserService;
@@ -45,7 +47,8 @@ public class UserController {
 		return service.getUserByEmailService(email);
 	}
 
-	public ResponseStructure<User> updateUserByEmailCOntroller(@RequestBody User user) {
+	@PutMapping(value = "/update")
+	public ResponseStructure<User> updateUserByEmailController(@RequestBody User user) {
 		return service.updateUserByEmailService(user);
 	}
 
@@ -55,8 +58,18 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/getCurrentSession")
-	public ResponseStructure<User> getUserFromSessionService() {
+	public ResponseStructure<User> getUserFromSessionController() {
 		return service.getUserFromSessionService();
+	}
+
+	@PutMapping(value = "/updateUserTask/{email}")
+	public ResponseStructure<User> updateUserTaskByUserEmailController(@PathVariable String email,
+			@RequestBody TaskEntity task) {
+		return service.updateUserTaskByUserEmailService(email, task);
+	}
+	@GetMapping(value = "/login/{email}/{password}")
+	public ResponseStructure<User> loginUserWithPasswordController(@PathVariable String email,@PathVariable String password) {
+		return service.loginUserWithPasswordService(email,password);
 	}
 
 }

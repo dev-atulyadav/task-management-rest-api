@@ -1,5 +1,6 @@
 package com.demo.taskmanagement.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -7,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.demo.taskmanagement.dao.UserDao;
+import com.demo.taskmanagement.dto.TaskEntity;
 import com.demo.taskmanagement.dto.User;
+import com.demo.taskmanagement.repository.TaskRepository;
 import com.demo.taskmanagement.repository.UserRepository;
 
 @Repository
@@ -15,6 +18,8 @@ public class UserDaoImpl implements UserDao {
 
 	@Autowired
 	private UserRepository repository;
+	@Autowired
+	private TaskRepository taskRepository;
 
 	@Override
 	public User saveUserDao(User user) {
@@ -57,4 +62,18 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
+	@Override
+	public User updateUserTaskByUserEmailDao(String email, TaskEntity task) {
+		User user = getUserByEmailDao(email);
+		List<TaskEntity> list = new ArrayList<TaskEntity>();
+		if (user != null) {
+			list.add(task);
+			user.setTasks(list);
+			taskRepository.save(task);
+			repository.save(user);
+			return user;
+		} else {
+			return null;
+		}
+	}
 }

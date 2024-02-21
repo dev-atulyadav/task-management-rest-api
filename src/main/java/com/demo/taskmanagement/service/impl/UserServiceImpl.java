@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.demo.taskmanagement.dao.UserDao;
+import com.demo.taskmanagement.dto.TaskEntity;
 import com.demo.taskmanagement.dto.User;
 import com.demo.taskmanagement.response.ResponseStructure;
 import com.demo.taskmanagement.service.UserService;
@@ -135,6 +136,44 @@ public class UserServiceImpl implements UserService {
 		} else {
 			structure.setData(null);
 			structure.setMsg("Login again!");
+			structure.setStatus(HttpStatus.NOT_FOUND.value());
+		}
+		return structure;
+	}
+
+	@Override
+	public ResponseStructure<User> updateUserTaskByUserEmailService(String email, TaskEntity task) {
+		User user = dao.updateUserTaskByUserEmailDao(email, task);
+		if (user != null) {
+			user.setPassword("****");
+			structure.setData(user);
+			structure.setMsg("data added!");
+			structure.setStatus(HttpStatus.OK.value());
+		} else {
+			structure.setData(null);
+			structure.setMsg("can't added data!");
+			structure.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
+		}
+		return structure;
+	}
+
+	@Override
+	public ResponseStructure<User> loginUserWithPasswordService(String email,String password) {
+		User user2 = dao.getUserByEmailDao(email);
+		if (user2 != null) {
+			if (user2.getPassword().equals(password)) {
+				session.setAttribute("userEmail", email);
+				structure.setMsg("Logged in!");
+				structure.setStatus(HttpStatus.FOUND.value());
+				user2.setPassword("****");
+				structure.setData(user2);
+			} else {
+				structure.setData(null);
+				structure.setMsg("Invalid password!");
+			}
+		} else {
+			structure.setData(null);
+			structure.setMsg("not record found!");
 			structure.setStatus(HttpStatus.NOT_FOUND.value());
 		}
 		return structure;

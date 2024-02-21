@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.demo.taskmanagement.dto.TaskEntity;
 import com.demo.taskmanagement.dto.User;
 import com.demo.taskmanagement.response.ResponseStructure;
 
@@ -22,5 +23,10 @@ public interface UserService {
 	public ResponseEntity<String> deleteUserByEmailService(String email);
 
 	public ResponseStructure<User> getUserFromSessionService();
+	
+	public ResponseStructure<User> loginUserWithPasswordService(String email,String password);
+	
+	public ResponseStructure<User> updateUserTaskByUserEmailService(String email, TaskEntity task);
+
 
 }
