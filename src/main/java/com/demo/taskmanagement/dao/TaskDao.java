@@ -13,7 +13,9 @@ public interface TaskDao {
 	public TaskEntity updateTaskById(TaskEntity task);
 
 	public boolean deleteTaskById(int id);
-	
+
 	public List<TaskEntity> getAllTaskDao();
+
+	public TaskEntity deleteTaskByUserEmailDao(int id);
 
 }

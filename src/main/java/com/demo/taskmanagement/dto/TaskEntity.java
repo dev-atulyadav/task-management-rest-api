@@ -1,13 +1,9 @@
 package com.demo.taskmanagement.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Entity
@@ -23,7 +19,4 @@ public class TaskEntity {
 	private String category;
 	private String status;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JsonBackReference
-	private User user ;
 }

@@ -67,9 +67,21 @@ public class UserController {
 			@RequestBody TaskEntity task) {
 		return service.updateUserTaskByUserEmailService(email, task);
 	}
+
 	@GetMapping(value = "/login/{email}/{password}")
-	public ResponseStructure<User> loginUserWithPasswordController(@PathVariable String email,@PathVariable String password) {
-		return service.loginUserWithPasswordService(email,password);
+	public ResponseStructure<User> loginUserWithPasswordController(@PathVariable String email,
+			@PathVariable String password) {
+		return service.loginUserWithPasswordService(email, password);
 	}
 
+	@GetMapping(value = "/getAllTasksByUserEmail/{email}")
+	public ResponseStructure<List<TaskEntity>> getAllTasksByUserEmailController(@PathVariable String email) {
+		return service.getAllTasksByUserEmailService(email);
+	}
+
+	@DeleteMapping(value = "/deleteTasksByUserEmail/{email}/{id}")
+	public ResponseStructure<List<TaskEntity>> deleteTaskByUserEmailController(@PathVariable String email,
+			@PathVariable int id) {
+		return service.deleteTaskByUserEmailService(email, id);
+	}
 }

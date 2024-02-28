@@ -23,10 +23,14 @@ public interface UserService {
 	public ResponseEntity<String> deleteUserByEmailService(String email);
 
 	public ResponseStructure<User> getUserFromSessionService();
-	
-	public ResponseStructure<User> loginUserWithPasswordService(String email,String password);
-	
+
+	public ResponseStructure<User> loginUserWithPasswordService(String email, String password);
+
 	public ResponseStructure<User> updateUserTaskByUserEmailService(String email, TaskEntity task);
+
+	public ResponseStructure<List<TaskEntity>> getAllTasksByUserEmailService(String email);
+
+	public ResponseStructure<List<TaskEntity>> deleteTaskByUserEmailService(String email,int id);
 
 
 }

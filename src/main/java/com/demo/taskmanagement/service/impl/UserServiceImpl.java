@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.demo.taskmanagement.dao.TaskDao;
 import com.demo.taskmanagement.dao.UserDao;
 import com.demo.taskmanagement.dto.TaskEntity;
 import com.demo.taskmanagement.dto.User;
@@ -24,9 +25,13 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao dao;
 	@Autowired
+	private TaskDao taskDao;
+	@Autowired
 	private ResponseStructure<User> structure;
 	@Autowired
 	private ResponseStructure<List<User>> structure2;
+	@Autowired
+	private ResponseStructure<List<TaskEntity>> rS;
 
 	@Override
 	public ResponseStructure<User> saveUserService(User user) {
@@ -158,7 +163,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseStructure<User> loginUserWithPasswordService(String email,String password) {
+	public ResponseStructure<User> loginUserWithPasswordService(String email, String password) {
 		User user2 = dao.getUserByEmailDao(email);
 		if (user2 != null) {
 			if (user2.getPassword().equals(password)) {
@@ -170,6 +175,7 @@ public class UserServiceImpl implements UserService {
 			} else {
 				structure.setData(null);
 				structure.setMsg("Invalid password!");
+				structure.setStatus(HttpStatus.NOT_FOUND.value());
 			}
 		} else {
 			structure.setData(null);
@@ -177,6 +183,45 @@ public class UserServiceImpl implements UserService {
 			structure.setStatus(HttpStatus.NOT_FOUND.value());
 		}
 		return structure;
+	}
+
+	@Override
+	public ResponseStructure<List<TaskEntity>> getAllTasksByUserEmailService(String email) {
+		List<TaskEntity> list = dao.getAllTasksByUserEmailDao(email);
+		if (list != null) {
+			rS.setData(list);
+			rS.setMsg("Data found!");
+			rS.setStatus(HttpStatus.FOUND.value());
+		} else {
+			rS.setData(null);
+			rS.setMsg("Please add tasks to display!");
+			rS.setStatus(HttpStatus.NOT_FOUND.value());
+		}
+		return rS;
+
+	}
+
+	@Override
+	public ResponseStructure<List<TaskEntity>> deleteTaskByUserEmailService(String email, int id) {
+		List<TaskEntity> list = dao.getAllTasksByUserEmailDao(email);
+		if (list != null) {
+			for (TaskEntity task : list) {
+				if (task.getId() == id) {
+					list.remove(task);
+					taskDao.deleteTaskByUserEmailDao(id);
+					taskDao.deleteTaskById(id);
+
+				}
+			}
+			rS.setData(list);
+			rS.setMsg("Data removed!");
+			rS.setStatus(HttpStatus.OK.value());
+		} else {
+			rS.setData(null);
+			rS.setMsg("Please add tasks to delete!");
+			rS.setStatus(HttpStatus.NOT_FOUND.value());
+		}
+		return rS;
 	}
 
 }

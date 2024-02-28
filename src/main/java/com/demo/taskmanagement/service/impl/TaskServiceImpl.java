@@ -90,7 +90,23 @@ public class TaskServiceImpl implements TaskService {
 		if (b) {
 			return new ResponseEntity<String>("Data deleted!", HttpStatus.OK);
 		} else {
-			return new ResponseEntity<String>("Data deleted!", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Data not deleted!", HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@Override
+	public ResponseEntity<String> updateTaskSatusByIdService(int id) {
+		TaskEntity task = dao.getTaskById(id);
+		if (task != null) {
+			task.setStatus("completed");
+			if (dao.updateTaskById(task) != null) {
+				return new ResponseEntity<String>("Task updated!", HttpStatus.OK);
+			} else {
+				return new ResponseEntity<String>("Task not updated!", HttpStatus.NOT_ACCEPTABLE);
+			}
+		} else {
+			return new ResponseEntity<String>("Task not found!", HttpStatus.NOT_ACCEPTABLE);
+
 		}
 	}
 }

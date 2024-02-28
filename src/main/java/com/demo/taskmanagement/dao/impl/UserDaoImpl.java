@@ -1,6 +1,5 @@
 package com.demo.taskmanagement.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -65,8 +64,8 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User updateUserTaskByUserEmailDao(String email, TaskEntity task) {
 		User user = getUserByEmailDao(email);
-		List<TaskEntity> list = new ArrayList<TaskEntity>();
 		if (user != null) {
+			List<TaskEntity> list = user.getTasks();
 			list.add(task);
 			user.setTasks(list);
 			taskRepository.save(task);
@@ -75,5 +74,32 @@ public class UserDaoImpl implements UserDao {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public List<TaskEntity> getAllTasksByUserEmailDao(String email) {
+		User user = getUserByEmailDao(email);
+//		System.out.println(user.getId());
+		if (user != null) {
+			List<TaskEntity> tasks = user.getTasks();
+			if (!tasks.isEmpty()) {
+				return tasks;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<TaskEntity> updateTasksByEmailDao(String email, List<TaskEntity> list) {
+		User user = null;
+		if (!list.isEmpty()) {
+			for (TaskEntity task : list) {
+				user = updateUserTaskByUserEmailDao(email, task);
+			}
+			if (user != null) {
+				return list;
+			}
+		}
+		return null;
 	}
 }

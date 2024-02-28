@@ -51,4 +51,9 @@ public class TaskController {
 		return service.deleteTaskByIdService(id);
 	}
 
+	@PutMapping("/updateStatus/{id}")
+	public ResponseEntity<String> updateTaskSatusByIdController(@PathVariable int id) {
+		return service.updateTaskSatusByIdController(id);
+	}
+
 }

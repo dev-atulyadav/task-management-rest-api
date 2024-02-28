@@ -51,4 +51,9 @@ public class TaskDaoImpl implements TaskDao {
 		return repository.findAll();
 	}
 
+	@Override
+	public TaskEntity deleteTaskByUserEmailDao(int id) {
+		return repository.deleteTaskByUserEmail(id);
+	}
+
 }

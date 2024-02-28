@@ -21,4 +21,8 @@ public interface UserDao {
 
 	public User updateUserTaskByUserEmailDao(String email, TaskEntity task);
 
+	public List<TaskEntity> getAllTasksByUserEmailDao(String email);
+
+	public List<TaskEntity> updateTasksByEmailDao(String email, List<TaskEntity> list);
+
 }

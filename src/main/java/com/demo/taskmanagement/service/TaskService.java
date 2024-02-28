@@ -18,4 +18,6 @@ public interface TaskService {
 	public ResponseStructure<TaskEntity> updateTaskByIdService(TaskEntity task);
 
 	public ResponseEntity<String> deleteTaskByIdService(int id);
+	
+	public ResponseEntity<String> updateTaskSatusByIdService(int id);
 }
